@@ -7,12 +7,14 @@
   // (a plain browser visit gets a stub WebApp object with empty initData) —
   // that's the reliable signal for "am I really in the Telegram WebView".
   let tgUser = null;
+  let tgInitData = "";
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
     if (tg && tg.initData) {
       tg.ready();
       tg.expand();
       document.documentElement.classList.add("tg-app");
+      tgInitData = tg.initData;
 
       const syncViewportHeight = () => {
         const h = tg.viewportStableHeight || tg.viewportHeight;
@@ -44,6 +46,11 @@
     if (now - lastTouchEnd <= 300) e.preventDefault();
     lastTouchEnd = now;
   }, { passive: false });
+
+  // Backend that verifies initData and relays the lead to Oksana via the
+  // Telegram Bot API (see backend/main.py). Bump alongside a redeploy if
+  // the Railway service URL ever changes.
+  const LEADS_ENDPOINT = "https://oksana-funnel-backend-production.up.railway.app/api/leads";
 
   const track = document.getElementById("track");
   const slides = Array.from(document.querySelectorAll("[data-slide]"));
@@ -146,15 +153,38 @@
   }
   prefillContact();
 
-  btnSubmitLead.addEventListener("click", () => {
+  btnSubmitLead.addEventListener("click", async () => {
     leadDraft.request = leadRequest.value.trim();
     leadDraft.contact = leadContact.value.trim();
 
-    // TODO: на этапе backend — отправить { quizAnswers, leadDraft } на FastAPI-эндпоинт
-    // приёма заявок (POST /api/leads) вместо console.log, и уведомить ADMIN_CHAT_ID.
-    console.log("Заявка (прототип, без backend):", { quizAnswers, leadDraft });
+    if (!tgInitData) {
+      // Previewing outside real Telegram (e.g. a plain browser tab) — there's
+      // no signed initData to send, and thus no one to actually verify/notify.
+      // Just log so the flow is still click-through-able for review.
+      console.log("Заявка (нет Telegram initData — просмотр вне Telegram):", { quizAnswers, leadDraft });
+      next();
+      return;
+    }
 
-    next();
+    const originalLabel = btnSubmitLead.textContent;
+    btnSubmitLead.disabled = true;
+    btnSubmitLead.textContent = "Отправляем…";
+
+    try {
+      const res = await fetch(LEADS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ initData: tgInitData, quizAnswers, leadDraft }),
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      btnSubmitLead.textContent = originalLabel;
+      next();
+    } catch (err) {
+      console.error("Не удалось отправить заявку:", err);
+      btnSubmitLead.textContent = "Не отправилось — нажми ещё раз";
+    } finally {
+      btnSubmitLead.disabled = false;
+    }
   });
 
   // Restart funnel
