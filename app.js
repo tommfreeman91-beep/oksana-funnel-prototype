@@ -4,10 +4,23 @@
   // Best-effort Telegram WebApp init — safe no-op outside Telegram.
   // TODO: on the backend-integration step, use Telegram.WebApp.initDataUnsafe.user
   // to prefill the contact field on the lead-form slide instead of asking manually.
+  //
+  // initData is only non-empty when actually launched from inside Telegram
+  // (a plain browser visit gets a stub WebApp object with empty initData) —
+  // that's the reliable signal for "am I really in the Telegram WebView".
   try {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (tg && tg.initData) {
+      tg.ready();
+      tg.expand();
+      document.documentElement.classList.add("tg-app");
+
+      const syncViewportHeight = () => {
+        const h = tg.viewportStableHeight || tg.viewportHeight;
+        if (h) document.documentElement.style.setProperty("--tg-vh", h + "px");
+      };
+      syncViewportHeight();
+      tg.onEvent("viewportChanged", syncViewportHeight);
     }
   } catch (e) { /* running outside Telegram — fine for the static prototype */ }
 

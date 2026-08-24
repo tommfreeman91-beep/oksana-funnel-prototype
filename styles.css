@@ -552,15 +552,38 @@ html, body {
   cursor: pointer;
 }
 
-/* ============ RESPONSIVE: real Telegram WebView (no chrome) ============ */
+/* ============ RESPONSIVE: narrow/short browser window (no chrome) ============ */
 @media (max-width: 480px), (max-height: 700px) {
   .stage { padding: 0; }
   .device {
     width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
     border-radius: 0;
     box-shadow: none;
   }
   .status-bar { display: none; }
+}
+
+/*
+  ============ REAL TELEGRAM WEBVIEW ============
+  The media query above guesses full-bleed mode from screen size, which is
+  unreliable — plenty of real phones report a WebView taller than 700px,
+  so the fixed 844px desktop-preview frame would overflow off-screen and
+  push the footer CTA button out of view (unreachable "Далее" button).
+  Inside Telegram we know for certain, so app.js adds .tg-app to <html>
+  and this always wins, regardless of measured height. --tg-vh is kept in
+  sync with Telegram.WebApp's real viewport height (see app.js).
+*/
+html.tg-app .stage { padding: 0; }
+html.tg-app .device {
+  width: 100vw;
+  height: var(--tg-vh, 100dvh);
+  max-height: var(--tg-vh, 100dvh);
+  border-radius: 0;
+  box-shadow: none;
+}
+html.tg-app .status-bar { display: none; }
+html.tg-app .footer {
+  padding-bottom: max(22px, env(safe-area-inset-bottom));
 }
