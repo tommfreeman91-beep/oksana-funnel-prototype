@@ -218,8 +218,12 @@
           <textarea class="field field--textarea" id="leadRequest" placeholder="Что именно сейчас не получается, что хочешь изменить"></textarea>
 
           <label class="field-label" for="leadContact">Как с тобой связаться</label>
-          <!-- TODO: на этапе бота — подставлять username из Telegram WebApp initData автоматически, поле оставить как подтверждение/резерв -->
+          <!-- Username подтягивается автоматически из Telegram (initDataUnsafe.user) в app.js.
+               initDataUnsafe не проверен криптографически на фронте — когда появится backend,
+               контакт для реальной отправки нужно брать из подписанного initData на сервере,
+               а не доверять только этому полю. -->
           <input class="field" id="leadContact" type="text" placeholder="Telegram @username или телефон" />
+          <p class="field-hint" id="contactHint"></p>
         </div>
         <div class="footer">
           <button class="btn btn-primary" id="btnSubmitLead">Оставить заявку</button>

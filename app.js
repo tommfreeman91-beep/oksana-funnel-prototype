@@ -2,12 +2,11 @@
   "use strict";
 
   // Best-effort Telegram WebApp init — safe no-op outside Telegram.
-  // TODO: on the backend-integration step, use Telegram.WebApp.initDataUnsafe.user
-  // to prefill the contact field on the lead-form slide instead of asking manually.
   //
   // initData is only non-empty when actually launched from inside Telegram
   // (a plain browser visit gets a stub WebApp object with empty initData) —
   // that's the reliable signal for "am I really in the Telegram WebView".
+  let tgUser = null;
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
     if (tg && tg.initData) {
@@ -21,6 +20,12 @@
       };
       syncViewportHeight();
       tg.onEvent("viewportChanged", syncViewportHeight);
+
+      // initDataUnsafe is exactly that — unsafe/unverified on the frontend.
+      // Fine for prefilling a form field in this static prototype. Once a
+      // backend exists, re-derive the real contact server-side from the
+      // signed initData hash instead of trusting this value on submit.
+      tgUser = (tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
     }
   } catch (e) { /* running outside Telegram — fine for the static prototype */ }
 
@@ -106,7 +111,24 @@
   // Lead form
   const leadRequest = document.getElementById("leadRequest");
   const leadContact = document.getElementById("leadContact");
+  const contactHint = document.getElementById("contactHint");
   const btnSubmitLead = document.getElementById("btnSubmitLead");
+
+  function prefillContact() {
+    if (tgUser && tgUser.username) {
+      leadContact.value = "@" + tgUser.username;
+      contactHint.textContent = "Подтянули автоматически из Telegram — можно поправить или дописать телефон.";
+    } else if (tgUser && (tgUser.first_name || tgUser.last_name)) {
+      // Some Telegram accounts have no @username set — fall back to the
+      // display name so the field isn't just empty, but still ask to confirm.
+      leadContact.value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ");
+      contactHint.textContent = "У тебя не задан @username в Telegram — проверь, что здесь удобно связаться, или впиши телефон.";
+    } else {
+      leadContact.value = "";
+      contactHint.textContent = "";
+    }
+  }
+  prefillContact();
 
   btnSubmitLead.addEventListener("click", () => {
     leadDraft.request = leadRequest.value.trim();
@@ -125,7 +147,7 @@
     btnRestart.addEventListener("click", () => {
       Object.keys(quizAnswers).forEach((k) => delete quizAnswers[k]);
       leadRequest.value = "";
-      leadContact.value = "";
+      prefillContact();
       document.querySelectorAll(".option.selected").forEach((o) => o.classList.remove("selected"));
       document.querySelectorAll("[data-quiz] [data-next]").forEach((b) => (b.disabled = true));
       goTo(0);
