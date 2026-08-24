@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Наставничество Оксаны — воронка с уроком</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<!-- TODO: на этапе подключения бота вернуть реальный Telegram WebApp SDK и вызвать ready()/expand() -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+<div class="stage">
+  <div class="device" id="device">
+
+    <!-- fake status bar (only visible in desktop preview frame) -->
+    <div class="status-bar">
+      <span class="status-time">12:04</span>
+      <span class="status-icons">●●● 5G ▮▮▮</span>
+    </div>
+
+    <!-- stories-style progress -->
+    <div class="progress-track" id="progressTrack"></div>
+
+    <!-- telegram-style top bar -->
+    <div class="topbar">
+      <button class="topbar-back" id="btnBack" aria-label="Назад">‹ Назад</button>
+      <div class="topbar-title">
+        <span class="topbar-title-main">Урок Оксаны</span>
+        <span class="topbar-title-sub" id="stepLabel">Шаг 1 из 11</span>
+      </div>
+      <button class="topbar-menu" aria-label="Меню">•••</button>
+    </div>
+
+    <!-- slides track -->
+    <div class="track" id="track">
+
+      <!-- 1 — ХУК / ОБЕЩАНИЕ -->
+      <section class="slide" data-slide>
+        <div class="content">
+          <div class="photo-card photo-card--tall">
+            <img src="assets/photos/IMG_4450.PNG" alt="Оксана у фонтана" />
+            <div class="photo-card-fade"></div>
+          </div>
+          <div class="card-body card-body--attached">
+            <p class="eyebrow">Для репетиторов английского</p>
+            <h1 class="headline">Если ты только выходишь в онлайн — или уже ведёшь учеников, но заявок вечно не хватает</h1>
+            <p class="lede">— дочитай этот урок до конца. Обещаю: ты удивишься, насколько он окажется полезным. После него заявки правда начинают идти.</p>
+            <button class="link-ghost" data-channel>Заглянуть в мой канал →</button>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next>Далее</button>
+        </div>
+      </section>
+
+      <!-- 2.1 — ИСТОРИЯ: ТРУДНОСТИ -->
+      <section class="slide" data-slide>
+        <div class="content">
+          <div class="photo-card photo-card--tall">
+            <img src="assets/photos/IMG_4448.PNG" alt="Оксана задумчиво смотрит вдаль" />
+            <div class="photo-card-fade"></div>
+          </div>
+          <div class="card-body card-body--attached">
+            <p class="eyebrow">Моя история</p>
+            <h2 class="headline headline--md">Я знаю, о чём говорю</h2>
+            <p class="lede">Потому что у меня тоже были дни, когда я открывала список своих учеников — а там пусто. Смотрела на других репетиторов, у которых поток заявок не останавливается, и думала: наверное, это просто не моё. Может, я не умею продавать. Может, дело во мне.</p>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next>Далее</button>
+        </div>
+      </section>
+
+      <!-- 2.2 — ИСТОРИЯ: ПЕРЕЛОМ -->
+      <section class="slide" data-slide>
+        <div class="content content--center">
+          <div class="quote-card">
+            <span class="quote-mark">“</span>
+            <p class="eyebrow">И знаете что?</p>
+            <p class="quote-text">У меня получилось.</p>
+            <div class="quote-rule"></div>
+            <p class="lede">Не сразу. Но получилось — и теперь я веду учеников на своих условиях, с очередью на запись. Как именно — расскажу в видео ниже.</p>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next>Далее</button>
+        </div>
+      </section>
+
+      <!-- 3 — ПЕРЕХОД К УРОКУ -->
+      <section class="slide" data-slide>
+        <div class="content content--center">
+          <p class="eyebrow eyebrow--center">Перед уроком</p>
+          <h2 class="headline headline--md headline--center">Досмотри до конца</h2>
+          <p class="lede lede--center">Урок короткий, но плотный — я разложила по полочкам всё, что сработало у меня. И в самом конце подготовила для тебя ещё кое-что полезное.</p>
+          <div class="note-pill">Перемотка вперёд отключена — так до конца доходят только те, кому это действительно надо.</div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next>Смотреть урок</button>
+        </div>
+      </section>
+
+      <!-- 4 — УРОК / ВИДЕО -->
+      <section class="slide slide--scroll" data-slide>
+        <div class="content">
+          <p class="eyebrow">Бесплатный урок</p>
+          <h2 class="headline headline--md">Как выйти на стабильный поток учеников</h2>
+
+          <div class="video-card">
+            <!--
+              TODO: вставить видео урока.
+              материалы/видео сейчас пусто — либо положи туда файл видео,
+              либо файл ссылка.txt со ссылкой на хостинг (Vimeo/YouTube/Rutube и т.д.),
+              и подставь его сюда вместо постера-заглушки.
+              Перемотка вперёд должна быть запрещена в реальном плеере — оставить только паузу и перемотку назад.
+            -->
+            <img src="assets/photos/IMG_4449.PNG" alt="Постер видеоурока" class="video-poster" />
+            <div class="video-overlay">
+              <div class="play-btn">▶</div>
+              <span class="video-todo">TODO: вставить видео</span>
+            </div>
+          </div>
+          <p class="video-caption">Перемотка вперёд отключена. Можно поставить на паузу или отмотать назад.</p>
+
+          <h3 class="section-title">О чём урок</h3>
+          <p class="lede">Дальше я расскажу, каким методом вывела себя на постоянные заявки. По шагам, без воды:</p>
+
+          <ol class="method-list">
+            <li><span class="method-num">1</span><div><b>Точка А → Точка Б.</b> Разберём, какие ресурсы у тебя есть сейчас и куда ты хочешь прийти.</div></li>
+            <li><span class="method-num">2</span><div><b>Экспертность и позиционирование.</b> Как показать, что тебе можно доверять учеников — без самозванства и надувания щёк.</div></li>
+            <li><span class="method-num">3</span><div><b>Продуктовая линейка.</b> Из чего должны состоять твои услуги, чтобы не упираться в разовые уроки. <!-- TODO: уточнить у Оксаны финальную формулировку блока 3 --></div></li>
+            <li><span class="method-num">4</span><div><!-- TODO: уточнить у Оксаны формулировку блока 4 --> Блок 4 — уточняется.</div></li>
+            <li><span class="method-num">5</span><div><!-- TODO: уточнить у Оксаны формулировку блока 5 --> Блок 5 — уточняется.</div></li>
+            <li><span class="method-num">6</span><div><!-- TODO: уточнить у Оксаны формулировку блока 6 --> Блок 6 — уточняется.</div></li>
+            <li><span class="method-num">7</span><div><!-- TODO: уточнить у Оксаны формулировку блока 7 --> Блок 7 — уточняется.</div></li>
+            <li><span class="method-num">8</span><div><b>Трафик и реклама.</b> Как я сама нашла первых учеников без большого бюджета — на личном опыте, без теории.</div></li>
+          </ol>
+
+          <h3 class="section-title">А вот, кстати, мои результаты</h3>
+          <!-- TODO: вставить скриншоты/цифры результатов — материалы/тексты или материалы/бонусы сейчас пусты -->
+          <div class="results-grid">
+            <div class="results-placeholder">TODO: скрин 1</div>
+            <div class="results-placeholder">TODO: скрин 2</div>
+            <div class="results-placeholder">TODO: скрин 3</div>
+          </div>
+
+          <p class="lede lede--soft">Это приложение — часть моей личной воронки, и такая же может быть у тебя. Если хочешь поделиться своей ситуацией и получить лично от меня рекомендации — дальше будет несколько коротких вопросов.</p>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next>Далее</button>
+        </div>
+      </section>
+
+      <!-- 5 — КВИЗ Q1 -->
+      <section class="slide" data-slide data-quiz="q1">
+        <div class="content content--center">
+          <p class="eyebrow eyebrow--center">Вопрос 1 из 3</p>
+          <!-- TODO: финальная формулировка вопроса — из материалы/тексты, пока черновик -->
+          <h2 class="headline headline--md headline--center">Сколько учеников ты хочешь вести в месяц?</h2>
+          <div class="options" data-options>
+            <button class="option" data-value="До 5">До 5</button>
+            <button class="option" data-value="6–15">6–15</button>
+            <button class="option" data-value="15+">15+</button>
+            <button class="option" data-value="Пока не считала — просто хочу стабильный поток">Пока не считала — просто хочу стабильный поток</button>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next disabled>Далее</button>
+        </div>
+      </section>
+
+      <!-- 6 — КВИЗ Q2 -->
+      <section class="slide" data-slide data-quiz="q2">
+        <div class="content content--center">
+          <p class="eyebrow eyebrow--center">Вопрос 2 из 3</p>
+          <!-- TODO: финальная формулировка вопроса — из материалы/тексты, пока черновик -->
+          <h2 class="headline headline--md headline--center">Что сейчас мешает больше всего?</h2>
+          <div class="options" data-options>
+            <button class="option" data-value="Нет заявок">Нет заявок</button>
+            <button class="option" data-value="Есть заявки, но не получается продавать">Есть заявки, но не получается продавать</button>
+            <button class="option" data-value="Нет чёткой структуры обучения">Нет чёткой структуры обучения</button>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next disabled>Далее</button>
+        </div>
+      </section>
+
+      <!-- 7 — КВИЗ Q3 -->
+      <section class="slide" data-slide data-quiz="q3">
+        <div class="content content--center">
+          <p class="eyebrow eyebrow--center">Вопрос 3 из 3</p>
+          <!-- TODO: финальная формулировка вопроса — из материалы/тексты, пока черновик -->
+          <h2 class="headline headline--md headline--center">Готова ли ты в ближайший месяц системно этим заниматься?</h2>
+          <div class="options" data-options>
+            <button class="option" data-value="Да, готова">Да, готова</button>
+            <button class="option" data-value="Скорее да">Скорее да</button>
+            <button class="option" data-value="Пока не уверена">Пока не уверена</button>
+          </div>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next disabled>Далее</button>
+        </div>
+      </section>
+
+      <!-- 8 — ЗАЯВКА -->
+      <section class="slide" data-slide>
+        <div class="content">
+          <p class="eyebrow">Последний шаг</p>
+          <h2 class="headline headline--md">Расскажи, что сейчас не получается</h2>
+          <p class="lede">Коротко, своими словами — я читаю каждую заявку лично.</p>
+
+          <label class="field-label" for="leadRequest">Ваш запрос</label>
+          <textarea class="field field--textarea" id="leadRequest" placeholder="Что именно сейчас не получается, что хочешь изменить"></textarea>
+
+          <label class="field-label" for="leadContact">Как с тобой связаться</label>
+          <!-- TODO: на этапе бота — подставлять username из Telegram WebApp initData автоматически, поле оставить как подтверждение/резерв -->
+          <input class="field" id="leadContact" type="text" placeholder="Telegram @username или телефон" />
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" id="btnSubmitLead">Оставить заявку</button>
+        </div>
+      </section>
+
+      <!-- 9 — ПОДТВЕРЖДЕНИЕ + БОНУС -->
+      <section class="slide" data-slide>
+        <div class="content content--center">
+          <div class="check-badge">✓</div>
+          <h2 class="headline headline--md headline--center">Заявку приняла!</h2>
+          <p class="lede lede--center">Скоро свяжусь с тобой лично.</p>
+
+          <div class="divider"></div>
+
+          <p class="lede lede--center">А ещё у меня для тебя бонус — за то, что дошла до конца.</p>
+
+          <!-- TODO: материалы/бонусы сейчас пусты — заменить плейсхолдеры на реальные файлы/ссылки -->
+          <div class="bonus-list">
+            <div class="bonus-item">
+              <span class="bonus-icon">▤</span>
+              <div class="bonus-text">
+                <b>Чек-лист «8 шагов к стабильному потоку учеников»</b>
+                <span>TODO: заменить на реальный файл из материалы/бонусы</span>
+              </div>
+            </div>
+            <div class="bonus-item">
+              <span class="bonus-icon">▤</span>
+              <div class="bonus-text">
+                <b>Шаблон первого сообщения ученику</b>
+                <span>TODO: заменить на реальный файл из материалы/бонусы</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-outline" data-channel>Подписаться на канал</button>
+        </div>
+        <div class="footer">
+          <button class="btn btn-primary" data-next>Далее</button>
+        </div>
+      </section>
+
+      <!-- 10 — БИБЛИОТЕКА МАТЕРИАЛОВ -->
+      <section class="slide" data-slide>
+        <div class="content">
+          <p class="eyebrow">Библиотека материалов</p>
+          <h2 class="headline headline--md">Все бонусы в одном месте</h2>
+
+          <!-- TODO: материалы/бонусы сейчас пусты — заменить плейсхолдеры и ссылки на реальные -->
+          <div class="bonus-list">
+            <div class="bonus-item bonus-item--row">
+              <span class="bonus-icon">▤</span>
+              <div class="bonus-text"><b>Чек-лист «8 шагов к стабильному потоку учеников»</b></div>
+              <button class="bonus-open">Открыть</button>
+            </div>
+            <div class="bonus-item bonus-item--row">
+              <span class="bonus-icon">▤</span>
+              <div class="bonus-text"><b>Шаблон первого сообщения ученику</b></div>
+              <button class="bonus-open">Открыть</button>
+            </div>
+            <div class="bonus-item bonus-item--row">
+              <span class="bonus-icon">▤</span>
+              <div class="bonus-text"><b>Запись урока</b></div>
+              <button class="bonus-open">Открыть</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" data-channel>Мой Telegram-канал</button>
+          <button class="btn btn-outline" id="btnRestart">Пройти воронку заново</button>
+        </div>
+        <div class="footer footer--hidden"></div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
