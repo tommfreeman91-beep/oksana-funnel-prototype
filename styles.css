@@ -26,6 +26,12 @@ html, body {
   color: var(--ink);
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* No pinch/double-tap zoom, no rubber-band horizontal pan — the meta
+     viewport's user-scalable=no alone isn't enough in every WebView
+     (iOS in particular still allows pinch-zoom unless touch-action also
+     blocks it). Vertical scroll stays enabled for the scrollable slides. */
+  touch-action: pan-y;
+  overscroll-behavior: none;
 }
 
 .stage {

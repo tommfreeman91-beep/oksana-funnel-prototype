@@ -29,6 +29,22 @@
     }
   } catch (e) { /* running outside Telegram — fine for the static prototype */ }
 
+  // Belt-and-suspenders against pinch/double-tap zoom: the viewport meta's
+  // user-scalable=no and CSS touch-action:pan-y don't get honored by every
+  // WebView (iOS Safari-based ones in particular still allow pinch unless
+  // the gesture itself is intercepted). gesturestart is Safari/WebKit-only;
+  // the two-finger touchmove check covers pinch on the rest.
+  document.addEventListener("gesturestart", (e) => e.preventDefault());
+  document.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
+  let lastTouchEnd = 0;
+  document.addEventListener("touchend", (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) e.preventDefault();
+    lastTouchEnd = now;
+  }, { passive: false });
+
   const track = document.getElementById("track");
   const slides = Array.from(document.querySelectorAll("[data-slide]"));
   const progressTrack = document.getElementById("progressTrack");
