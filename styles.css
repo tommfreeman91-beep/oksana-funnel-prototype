@@ -552,8 +552,18 @@ html, body {
   cursor: pointer;
 }
 
-/* ============ RESPONSIVE: narrow/short browser window (no chrome) ============ */
-@media (max-width: 480px), (max-height: 700px) {
+/*
+  ============ RESPONSIVE: phone-width viewport (no chrome) ============
+  Width is the only trustworthy signal here — real phones (and Telegram's
+  WebView) are always narrow in portrait, but their *height* varies a lot
+  (700–950+ CSS px depending on device/notch/Telegram's own header), so a
+  height-based check previously left some real phones stuck in "desktop
+  preview frame" mode: the frame's own border/shadow/page padding doesn't
+  fit inside a viewport that's exactly phone-sized, which clipped the
+  bottom of the page and hid the footer CTA button entirely. Width-only
+  avoids that regardless of device or Telegram client quirks.
+*/
+@media (max-width: 600px) {
   .stage { padding: 0; }
   .device {
     width: 100vw;
