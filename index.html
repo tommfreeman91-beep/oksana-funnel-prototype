@@ -10,7 +10,7 @@
 <!-- ?v= is bumped on every deploy that touches styles.css/app.js — see DEPLOY.md.
      Telegram's WebView caches these aggressively; without a changing URL,
      users can keep seeing a stale build even after force-closing the app. -->
-<link rel="stylesheet" href="styles.css?v=4" />
+<link rel="stylesheet" href="styles.css?v=5" />
 <!-- TODO: на этапе подключения бота вернуть реальный Telegram WebApp SDK и вызвать ready()/expand() -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -113,20 +113,15 @@
           <p class="eyebrow">Бесплатный урок</p>
           <h2 class="headline headline--md">Как выйти на стабильный поток учеников</h2>
 
-          <div class="video-card">
-            <!--
-              TODO: вставить видео урока.
-              материалы/видео сейчас пусто — либо положи туда файл видео,
-              либо файл ссылка.txt со ссылкой на хостинг (Vimeo/YouTube/Rutube и т.д.),
-              и подставь его сюда вместо постера-заглушки.
-              Перемотка вперёд должна быть запрещена в реальном плеере — оставить только паузу и перемотку назад.
-            -->
-            <img src="assets/photos/IMG_4449.PNG" alt="Постер видеоурока" class="video-poster" />
-            <div class="video-overlay">
-              <div class="play-btn">▶</div>
-              <span class="video-todo">TODO: вставить видео</span>
-            </div>
-          </div>
+          <video
+            id="lessonVideo"
+            class="video-card"
+            controls
+            controlsList="nofastforward noremoteplayback"
+            disablePictureInPicture
+            poster="assets/photos/IMG_4449.PNG"
+            src="https://oksana-funnel-backend-production.up.railway.app/videos/lesson.mp4"
+          ></video>
           <p class="video-caption">Перемотка вперёд отключена. Можно поставить на паузу или отмотать назад.</p>
 
           <h3 class="section-title">О чём урок</h3>
@@ -243,22 +238,28 @@
 
           <p class="lede lede--center">А ещё у меня для тебя бонус — за то, что дошла до конца.</p>
 
-          <!-- TODO: материалы/бонусы сейчас пусты — заменить плейсхолдеры на реальные файлы/ссылки -->
           <div class="bonus-list">
-            <div class="bonus-item">
+            <a class="bonus-item" href="assets/bonuses/Гайд_Как_оценить_уровень_ученика_за_30_минут.pdf" target="_blank" rel="noopener">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text">
-                <b>Чек-лист «8 шагов к стабильному потоку учеников»</b>
-                <span>TODO: заменить на реальный файл из материалы/бонусы</span>
+                <b>Гайд: как оценить уровень ученика за 30 минут</b>
+                <span>PDF · открыть</span>
               </div>
-            </div>
-            <div class="bonus-item">
+            </a>
+            <a class="bonus-item" href="assets/bonuses/Шаблон_ответного_сообщения_ученику.png" target="_blank" rel="noopener">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text">
-                <b>Шаблон первого сообщения ученику</b>
-                <span>TODO: заменить на реальный файл из материалы/бонусы</span>
+                <b>Шаблон ответного сообщения ученику</b>
+                <span>PNG · открыть</span>
               </div>
-            </div>
+            </a>
+            <a class="bonus-item" href="assets/bonuses/Экспресс_способы_привлечения_учеников_2026.pdf" target="_blank" rel="noopener">
+              <span class="bonus-icon">▤</span>
+              <div class="bonus-text">
+                <b>Экспресс-способы привлечения учеников 2026</b>
+                <span>PDF · открыть</span>
+              </div>
+            </a>
           </div>
 
           <button class="btn btn-outline" data-channel>Подписаться на канал</button>
@@ -274,22 +275,21 @@
           <p class="eyebrow">Библиотека материалов</p>
           <h2 class="headline headline--md">Все бонусы в одном месте</h2>
 
-          <!-- TODO: материалы/бонусы сейчас пусты — заменить плейсхолдеры и ссылки на реальные -->
           <div class="bonus-list">
             <div class="bonus-item bonus-item--row">
               <span class="bonus-icon">▤</span>
-              <div class="bonus-text"><b>Чек-лист «8 шагов к стабильному потоку учеников»</b></div>
-              <button class="bonus-open">Открыть</button>
+              <div class="bonus-text"><b>Гайд: как оценить уровень ученика за 30 минут</b></div>
+              <a class="bonus-open" href="assets/bonuses/Гайд_Как_оценить_уровень_ученика_за_30_минут.pdf" target="_blank" rel="noopener">Открыть</a>
             </div>
             <div class="bonus-item bonus-item--row">
               <span class="bonus-icon">▤</span>
-              <div class="bonus-text"><b>Шаблон первого сообщения ученику</b></div>
-              <button class="bonus-open">Открыть</button>
+              <div class="bonus-text"><b>Шаблон ответного сообщения ученику</b></div>
+              <a class="bonus-open" href="assets/bonuses/Шаблон_ответного_сообщения_ученику.png" target="_blank" rel="noopener">Открыть</a>
             </div>
             <div class="bonus-item bonus-item--row">
               <span class="bonus-icon">▤</span>
-              <div class="bonus-text"><b>Запись урока</b></div>
-              <button class="bonus-open">Открыть</button>
+              <div class="bonus-text"><b>Экспресс-способы привлечения учеников 2026</b></div>
+              <a class="bonus-open" href="assets/bonuses/Экспресс_способы_привлечения_учеников_2026.pdf" target="_blank" rel="noopener">Открыть</a>
             </div>
           </div>
 
@@ -303,6 +303,6 @@
   </div>
 </div>
 
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

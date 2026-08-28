@@ -187,6 +187,22 @@
     }
   });
 
+  // Video lesson — block seeking past the furthest point actually watched
+  // (controlsList="nofastforward" only hides the fast-forward buttons in
+  // Chrome, it doesn't stop a finger-drag on the scrubber).
+  const lessonVideo = document.getElementById("lessonVideo");
+  if (lessonVideo) {
+    let maxWatched = 0;
+    lessonVideo.addEventListener("timeupdate", () => {
+      if (lessonVideo.currentTime > maxWatched) maxWatched = lessonVideo.currentTime;
+    });
+    lessonVideo.addEventListener("seeking", () => {
+      if (lessonVideo.currentTime > maxWatched + 0.5) {
+        lessonVideo.currentTime = maxWatched;
+      }
+    });
+  }
+
   // Restart funnel
   const btnRestart = document.getElementById("btnRestart");
   if (btnRestart) {
