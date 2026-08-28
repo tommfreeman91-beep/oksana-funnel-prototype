@@ -189,16 +189,39 @@
 
   // Video lesson — block seeking past the furthest point actually watched
   // (controlsList="nofastforward" only hides the fast-forward buttons in
-  // Chrome, it doesn't stop a finger-drag on the scrubber).
+  // Chrome, it doesn't stop a finger-drag on the scrubber). "seeking" alone
+  // isn't reliably fired by every mobile WebView (Telegram's included), so
+  // this re-checks on timeupdate/seeked too instead of a one-shot listener.
   const lessonVideo = document.getElementById("lessonVideo");
+  const lessonNextBtn = document.getElementById("lessonNextBtn");
   if (lessonVideo) {
     let maxWatched = 0;
+    const TOLERANCE = 0.75; // seconds of slack so normal playback doesn't jitter
+
+    function clampForward() {
+      if (lessonVideo.currentTime > maxWatched + TOLERANCE) {
+        lessonVideo.currentTime = maxWatched;
+      }
+    }
+
     lessonVideo.addEventListener("timeupdate", () => {
       if (lessonVideo.currentTime > maxWatched) maxWatched = lessonVideo.currentTime;
+      clampForward();
     });
-    lessonVideo.addEventListener("seeking", () => {
-      if (lessonVideo.currentTime > maxWatched + 0.5) {
-        lessonVideo.currentTime = maxWatched;
+    lessonVideo.addEventListener("seeking", clampForward);
+    lessonVideo.addEventListener("seeked", clampForward);
+  }
+
+  if (lessonVideo && lessonNextBtn) {
+    function unlockNext() {
+      lessonNextBtn.disabled = false;
+    }
+    lessonVideo.addEventListener("ended", unlockNext);
+    // Fallback: some sources report a slightly-off duration, so "ended"
+    // can be missed — unlock once playback is effectively at the end too.
+    lessonVideo.addEventListener("timeupdate", () => {
+      if (lessonVideo.duration && lessonVideo.currentTime >= lessonVideo.duration - 0.5) {
+        unlockNext();
       }
     });
   }

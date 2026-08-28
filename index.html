@@ -119,6 +119,8 @@
             controls
             controlsList="nofastforward noremoteplayback"
             disablePictureInPicture
+            playsinline
+            webkit-playsinline="true"
             poster="assets/photos/IMG_4449.PNG"
             src="https://oksana-funnel-backend-production.up.railway.app/videos/lesson.mp4"
           ></video>
@@ -149,7 +151,7 @@
           <p class="lede lede--soft">Это приложение — часть моей личной воронки, и такая же может быть у тебя. Если хочешь поделиться своей ситуацией и получить лично от меня рекомендации — дальше будет несколько коротких вопросов.</p>
         </div>
         <div class="footer">
-          <button class="btn btn-primary" data-next>Далее</button>
+          <button class="btn btn-primary" id="lessonNextBtn" data-next disabled>Далее</button>
         </div>
       </section>
 
@@ -320,6 +322,6 @@
   </div>
 </div>
 
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>
