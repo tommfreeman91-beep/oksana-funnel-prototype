@@ -203,6 +203,70 @@
     });
   }
 
+  // Bonus lightbox — keeps PDFs/images inside the Mini App. A plain
+  // target="_blank"/window.open on these URLs gets handed off by Telegram's
+  // WebView to the system browser (Safari/Chrome) instead of opening in-app,
+  // which reads as "the bonus is broken" even though the file is fine.
+  const bonusLightbox = document.getElementById("bonusLightbox");
+  const lightboxTitle = document.getElementById("lightboxTitle");
+  const lightboxImage = document.getElementById("lightboxImage");
+  const lightboxFrame = document.getElementById("lightboxFrame");
+
+  function closeBonus() {
+    bonusLightbox.hidden = true;
+    lightboxImage.hidden = true;
+    lightboxFrame.hidden = true;
+    lightboxImage.src = "";
+    lightboxFrame.src = "";
+    try {
+      const tg = window.Telegram && window.Telegram.WebApp;
+      if (tg && tg.BackButton) {
+        tg.BackButton.offClick(closeBonus);
+        tg.BackButton.hide();
+      }
+    } catch (e) { /* running outside Telegram */ }
+  }
+
+  function openBonus(src, type, title) {
+    lightboxTitle.textContent = title || "";
+    if (type === "image") {
+      lightboxImage.src = src;
+      lightboxImage.hidden = false;
+      lightboxFrame.hidden = true;
+      lightboxFrame.src = "";
+    } else {
+      lightboxFrame.src = src;
+      lightboxFrame.hidden = false;
+      lightboxImage.hidden = true;
+      lightboxImage.src = "";
+    }
+    bonusLightbox.hidden = false;
+
+    // Wire Telegram's own back gesture/header-back-arrow to close the
+    // overlay instead of leaving the Mini App while it's open.
+    try {
+      const tg = window.Telegram && window.Telegram.WebApp;
+      if (tg && tg.BackButton) {
+        tg.BackButton.onClick(closeBonus);
+        tg.BackButton.show();
+      }
+    } catch (e) { /* running outside Telegram */ }
+  }
+
+  if (bonusLightbox) {
+    document.querySelectorAll("[data-bonus-src]").forEach((el) => {
+      el.addEventListener("click", () => {
+        openBonus(el.dataset.bonusSrc, el.dataset.bonusType, el.dataset.bonusTitle);
+      });
+    });
+    document.querySelectorAll("[data-lightbox-close]").forEach((el) => {
+      el.addEventListener("click", closeBonus);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !bonusLightbox.hidden) closeBonus();
+    });
+  }
+
   // Restart funnel
   const btnRestart = document.getElementById("btnRestart");
   if (btnRestart) {

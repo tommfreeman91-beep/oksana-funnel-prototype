@@ -10,7 +10,7 @@
 <!-- ?v= is bumped on every deploy that touches styles.css/app.js — see DEPLOY.md.
      Telegram's WebView caches these aggressively; without a changing URL,
      users can keep seeing a stale build even after force-closing the app. -->
-<link rel="stylesheet" href="styles.css?v=5" />
+<link rel="stylesheet" href="styles.css?v=6" />
 <!-- TODO: на этапе подключения бота вернуть реальный Telegram WebApp SDK и вызвать ready()/expand() -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -239,27 +239,27 @@
           <p class="lede lede--center">А ещё у меня для тебя бонус — за то, что дошла до конца.</p>
 
           <div class="bonus-list">
-            <a class="bonus-item" href="assets/bonuses/Гайд_Как_оценить_уровень_ученика_за_30_минут.pdf" target="_blank" rel="noopener">
+            <button class="bonus-item" type="button" data-bonus-src="assets/bonuses/Гайд_Как_оценить_уровень_ученика_за_30_минут.pdf" data-bonus-type="pdf" data-bonus-title="Гайд: как оценить уровень ученика за 30 минут">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text">
                 <b>Гайд: как оценить уровень ученика за 30 минут</b>
                 <span>PDF · открыть</span>
               </div>
-            </a>
-            <a class="bonus-item" href="assets/bonuses/Шаблон_ответного_сообщения_ученику.png" target="_blank" rel="noopener">
+            </button>
+            <button class="bonus-item" type="button" data-bonus-src="assets/bonuses/Шаблон_ответного_сообщения_ученику.png" data-bonus-type="image" data-bonus-title="Шаблон ответного сообщения ученику">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text">
                 <b>Шаблон ответного сообщения ученику</b>
                 <span>PNG · открыть</span>
               </div>
-            </a>
-            <a class="bonus-item" href="assets/bonuses/Экспресс_способы_привлечения_учеников_2026.pdf" target="_blank" rel="noopener">
+            </button>
+            <button class="bonus-item" type="button" data-bonus-src="assets/bonuses/Экспресс_способы_привлечения_учеников_2026.pdf" data-bonus-type="pdf" data-bonus-title="Экспресс-способы привлечения учеников 2026">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text">
                 <b>Экспресс-способы привлечения учеников 2026</b>
                 <span>PDF · открыть</span>
               </div>
-            </a>
+            </button>
           </div>
 
           <button class="btn btn-outline" data-channel>Подписаться на канал</button>
@@ -279,17 +279,17 @@
             <div class="bonus-item bonus-item--row">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text"><b>Гайд: как оценить уровень ученика за 30 минут</b></div>
-              <a class="bonus-open" href="assets/bonuses/Гайд_Как_оценить_уровень_ученика_за_30_минут.pdf" target="_blank" rel="noopener">Открыть</a>
+              <button class="bonus-open" type="button" data-bonus-src="assets/bonuses/Гайд_Как_оценить_уровень_ученика_за_30_минут.pdf" data-bonus-type="pdf" data-bonus-title="Гайд: как оценить уровень ученика за 30 минут">Открыть</button>
             </div>
             <div class="bonus-item bonus-item--row">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text"><b>Шаблон ответного сообщения ученику</b></div>
-              <a class="bonus-open" href="assets/bonuses/Шаблон_ответного_сообщения_ученику.png" target="_blank" rel="noopener">Открыть</a>
+              <button class="bonus-open" type="button" data-bonus-src="assets/bonuses/Шаблон_ответного_сообщения_ученику.png" data-bonus-type="image" data-bonus-title="Шаблон ответного сообщения ученику">Открыть</button>
             </div>
             <div class="bonus-item bonus-item--row">
               <span class="bonus-icon">▤</span>
               <div class="bonus-text"><b>Экспресс-способы привлечения учеников 2026</b></div>
-              <a class="bonus-open" href="assets/bonuses/Экспресс_способы_привлечения_учеников_2026.pdf" target="_blank" rel="noopener">Открыть</a>
+              <button class="bonus-open" type="button" data-bonus-src="assets/bonuses/Экспресс_способы_привлечения_учеников_2026.pdf" data-bonus-type="pdf" data-bonus-title="Экспресс-способы привлечения учеников 2026">Открыть</button>
             </div>
           </div>
 
@@ -300,9 +300,26 @@
       </section>
 
     </div>
+
+    <!-- Bonus lightbox — keeps PDF/image bonuses inside the Mini App
+         instead of handing them off to the system browser (a plain
+         target="_blank"/window.open on a Telegram WebView opens Safari). -->
+    <div class="lightbox" id="bonusLightbox" hidden>
+      <div class="lightbox-backdrop" data-lightbox-close></div>
+      <div class="lightbox-panel">
+        <div class="lightbox-header">
+          <span class="lightbox-title" id="lightboxTitle"></span>
+          <button class="lightbox-close" type="button" data-lightbox-close aria-label="Закрыть">✕</button>
+        </div>
+        <div class="lightbox-body">
+          <img id="lightboxImage" alt="" hidden />
+          <iframe id="lightboxFrame" title="Материал" hidden></iframe>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
