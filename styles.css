@@ -300,6 +300,12 @@ html, body {
 .video-card {
   display: block;
   width: 100%;
+  /* Without this, Chromium collapses a flex item's aspect-ratio-derived
+     height to 0 here — the default flex-shrink:1 lets the automatic
+     minimum size (which comes out 0 for a replaced element sized via
+     aspect-ratio in a column flex container) win, so the whole player
+     vanishes. Confirmed live: flex-shrink:0 is what fixes it. */
+  flex-shrink: 0;
   border-radius: var(--radius-md);
   overflow: hidden;
   aspect-ratio: 16 / 9;
