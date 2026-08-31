@@ -100,18 +100,17 @@
     });
   });
 
-  // Channel subscribe — placeholder link, no real channel wired up yet.
-  // TODO: заменить '#' на реальную ссылку/username канала Оксаны (материалы/тексты или .env CHANNEL_USERNAME)
+  // Channel subscribe — private invite link (t.me/+...), not a public @username.
   document.querySelectorAll("[data-channel]").forEach((btn) => {
     btn.addEventListener("click", () => {
       try {
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-          window.Telegram.WebApp.openTelegramLink("https://t.me/TODO_channel_username");
+          window.Telegram.WebApp.openTelegramLink("https://t.me/+k1VbbOqXTaZmZjA6");
         } else {
-          window.open("https://t.me/TODO_channel_username", "_blank");
+          window.open("https://t.me/+k1VbbOqXTaZmZjA6", "_blank");
         }
       } catch (e) {
-        window.open("https://t.me/TODO_channel_username", "_blank");
+        window.open("https://t.me/+k1VbbOqXTaZmZjA6", "_blank");
       }
     });
   });
@@ -198,16 +197,21 @@
     let maxWatched = 0;
     const TOLERANCE = 0.75; // seconds of slack so normal playback doesn't jitter
 
+    // The clamp check must run BEFORE maxWatched is allowed to advance —
+    // updating maxWatched to currentTime first (as a separate step) makes
+    // the tolerance check trivially pass every time, silently accepting
+    // any jump as the new high-water mark. That defeated exactly the
+    // "timeupdate" fallback this is meant to be, on any WebView where a
+    // scrubber-drag seek doesn't reliably fire seeking/seeked.
     function clampForward() {
       if (lessonVideo.currentTime > maxWatched + TOLERANCE) {
         lessonVideo.currentTime = maxWatched;
+      } else if (lessonVideo.currentTime > maxWatched) {
+        maxWatched = lessonVideo.currentTime;
       }
     }
 
-    lessonVideo.addEventListener("timeupdate", () => {
-      if (lessonVideo.currentTime > maxWatched) maxWatched = lessonVideo.currentTime;
-      clampForward();
-    });
+    lessonVideo.addEventListener("timeupdate", clampForward);
     lessonVideo.addEventListener("seeking", clampForward);
     lessonVideo.addEventListener("seeked", clampForward);
   }
