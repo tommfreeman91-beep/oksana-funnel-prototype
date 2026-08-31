@@ -234,13 +234,18 @@
   const lightboxTitle = document.getElementById("lightboxTitle");
   const lightboxImage = document.getElementById("lightboxImage");
   const lightboxFrame = document.getElementById("lightboxFrame");
+  const lightboxDownload = document.getElementById("lightboxDownload");
 
   function closeBonus() {
     bonusLightbox.hidden = true;
     lightboxImage.hidden = true;
     lightboxFrame.hidden = true;
     lightboxImage.src = "";
-    lightboxFrame.src = "";
+    // Reset to about:blank rather than "" — some WebViews keep rendering
+    // the last document (and its scroll position) until a real navigation
+    // happens, so the next PDF opened could otherwise inherit this one's
+    // scroll/page.
+    lightboxFrame.src = "about:blank";
     try {
       const tg = window.Telegram && window.Telegram.WebApp;
       if (tg && tg.BackButton) {
@@ -250,18 +255,46 @@
     } catch (e) { /* running outside Telegram */ }
   }
 
+  function downloadBonus(src, fileName) {
+    const fileUrl = new URL(src, window.location.href).href;
+    try {
+      const tg = window.Telegram && window.Telegram.WebApp;
+      if (tg && typeof tg.downloadFile === "function") {
+        tg.downloadFile({ url: fileUrl, file_name: fileName }, () => {});
+        return;
+      }
+    } catch (e) { /* fall through to browser download */ }
+    const a = document.createElement("a");
+    a.href = fileUrl;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
   function openBonus(src, type, title) {
     lightboxTitle.textContent = title || "";
+    const fileName = decodeURIComponent(src.split("/").pop());
+    lightboxDownload.onclick = () => downloadBonus(src, fileName);
+
     if (type === "image") {
+      lightboxFrame.hidden = true;
+      lightboxFrame.src = "about:blank";
       lightboxImage.src = src;
       lightboxImage.hidden = false;
-      lightboxFrame.hidden = true;
-      lightboxFrame.src = "";
     } else {
-      lightboxFrame.src = src;
-      lightboxFrame.hidden = false;
       lightboxImage.hidden = true;
       lightboxImage.src = "";
+      lightboxFrame.hidden = false;
+      // Same reused <iframe> across bonuses: reassigning an identical src
+      // is a no-op in Chrome/WebKit, which is how a PDF opened a second
+      // time kept showing whatever page it was scrolled to last time.
+      // Force a real navigation via about:blank first, then load the real
+      // file with #page=1 on the next tick so it always starts at page 1.
+      lightboxFrame.src = "about:blank";
+      requestAnimationFrame(() => {
+        lightboxFrame.src = src + "#page=1";
+      });
     }
     bonusLightbox.hidden = false;
 
