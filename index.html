@@ -10,7 +10,7 @@
 <!-- ?v= is bumped on every deploy that touches styles.css/app.js — see DEPLOY.md.
      Telegram's WebView caches these aggressively; without a changing URL,
      users can keep seeing a stale build even after force-closing the app. -->
-<link rel="stylesheet" href="styles.css?v=7" />
+<link rel="stylesheet" href="styles.css?v=8" />
 <!-- TODO: на этапе подключения бота вернуть реальный Telegram WebApp SDK и вызвать ready()/expand() -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -32,7 +32,7 @@
     <div class="topbar">
       <button class="topbar-back" id="btnBack" aria-label="Назад">‹ Назад</button>
       <div class="topbar-title">
-        <span class="topbar-title-main">Урок Оксаны</span>
+        <span class="topbar-title-main">Оксана Гера</span>
         <span class="topbar-title-sub" id="stepLabel">Шаг 1 из 11</span>
       </div>
       <button class="topbar-menu" aria-label="Меню">•••</button>
@@ -49,9 +49,9 @@
             <div class="photo-card-fade"></div>
           </div>
           <div class="card-body card-body--attached">
-            <p class="eyebrow">Для репетиторов английского</p>
+            <p class="eyebrow">Наставник по продажам для репетиторов</p>
             <h1 class="headline">Если ты только выходишь в онлайн — или уже ведёшь учеников, но заявок вечно не хватает</h1>
-            <p class="lede">— дочитай этот урок до конца. Обещаю: ты удивишься, насколько он окажется полезным. После него заявки правда начинают идти.</p>
+            <p class="lede">— скорее смотри урок. Обещаю: ты удивишься, насколько он окажется полезным. После него заявки правда начинают идти.</p>
             <button class="link-ghost" data-channel>Заглянуть в мой канал →</button>
           </div>
         </div>
@@ -68,7 +68,6 @@
             <div class="photo-card-fade"></div>
           </div>
           <div class="card-body card-body--attached">
-            <p class="eyebrow">Моя история</p>
             <h2 class="headline headline--md">Я знаю, о чём говорю</h2>
             <p class="lede">Потому что у меня тоже были дни, когда я открывала список своих учеников — а там пусто. Смотрела на других репетиторов, у которых поток заявок не останавливается, и думала: наверное, это просто не моё. Может, я не умею продавать. Может, дело во мне.</p>
           </div>
@@ -86,7 +85,7 @@
             <p class="eyebrow">И знаете что?</p>
             <p class="quote-text">У меня получилось.</p>
             <div class="quote-rule"></div>
-            <p class="lede">Не сразу. Но получилось — и теперь я веду учеников на своих условиях, с очередью на запись. Как именно — расскажу в видео ниже.</p>
+            <p class="lede">Не сразу. Но получилось — и теперь я веду учеников на своих условиях, с очередью на запись. Как именно — рассказала в видео-уроке.</p>
           </div>
         </div>
         <div class="footer">
@@ -97,9 +96,8 @@
       <!-- 3 — ПЕРЕХОД К УРОКУ -->
       <section class="slide" data-slide>
         <div class="content content--center">
-          <p class="eyebrow eyebrow--center">Перед уроком</p>
           <h2 class="headline headline--md headline--center">Досмотри до конца</h2>
-          <p class="lede lede--center">Урок короткий, но плотный — я разложила по полочкам всё, что сработало у меня. И в самом конце подготовила для тебя ещё кое-что полезное.</p>
+          <p class="lede lede--center">Урок короткий, но плотный — я разложила по полочкам всё, что сработало у меня.</p>
           <div class="note-pill">Перемотка вперёд отключена — так до конца доходят только те, кому это действительно надо.</div>
         </div>
         <div class="footer">
@@ -127,28 +125,16 @@
           <p class="video-caption">Перемотка вперёд отключена. Можно поставить на паузу или отмотать назад.</p>
 
           <h3 class="section-title">О чём урок</h3>
-          <p class="lede">Дальше я расскажу, каким методом вывела себя на постоянные заявки. По шагам, без воды:</p>
-
-          <ol class="method-list">
-            <li><span class="method-num">1</span><div><b>Точка А → Точка Б.</b> Разберём, какие ресурсы у тебя есть сейчас и куда ты хочешь прийти.</div></li>
-            <li><span class="method-num">2</span><div><b>Экспертность и позиционирование.</b> Как показать, что тебе можно доверять учеников — без самозванства и надувания щёк.</div></li>
-            <li><span class="method-num">3</span><div><b>Продуктовая линейка.</b> Из чего должны состоять твои услуги, чтобы не упираться в разовые уроки. <!-- TODO: уточнить у Оксаны финальную формулировку блока 3 --></div></li>
-            <li><span class="method-num">4</span><div><!-- TODO: уточнить у Оксаны формулировку блока 4 --> Блок 4 — уточняется.</div></li>
-            <li><span class="method-num">5</span><div><!-- TODO: уточнить у Оксаны формулировку блока 5 --> Блок 5 — уточняется.</div></li>
-            <li><span class="method-num">6</span><div><!-- TODO: уточнить у Оксаны формулировку блока 6 --> Блок 6 — уточняется.</div></li>
-            <li><span class="method-num">7</span><div><!-- TODO: уточнить у Оксаны формулировку блока 7 --> Блок 7 — уточняется.</div></li>
-            <li><span class="method-num">8</span><div><b>Трафик и реклама.</b> Как я сама нашла первых учеников без большого бюджета — на личном опыте, без теории.</div></li>
-          </ol>
+          <p class="lede">В уроке я рассказала каким методом вывела себя на постоянные заявки. По шагам и без воды.</p>
 
           <h3 class="section-title">А вот, кстати, мои результаты</h3>
-          <!-- TODO: вставить скриншоты/цифры результатов — материалы/тексты или материалы/бонусы сейчас пусты -->
           <div class="results-grid">
-            <div class="results-placeholder">TODO: скрин 1</div>
-            <div class="results-placeholder">TODO: скрин 2</div>
-            <div class="results-placeholder">TODO: скрин 3</div>
+            <img src="assets/results/1.jpeg" alt="Скриншот результата 1" />
+            <img src="assets/results/2.jpeg" alt="Скриншот результата 2" />
+            <img src="assets/results/3.jpeg" alt="Скриншот результата 3" />
           </div>
 
-          <p class="lede lede--soft">Это приложение — часть моей личной воронки, и такая же может быть у тебя. Если хочешь поделиться своей ситуацией и получить лично от меня рекомендации — дальше будет несколько коротких вопросов.</p>
+          <p class="lede lede--soft">В 2025 году я заработала больше 2,5 миллиона за год, а уже в 2026 мои доходы в месяц доходят до 600.000. Это всё благодаря тому, что я перестала продавать свои знания за 500–1500 рублей и научилась продавать на чеки с пятью нулями.</p>
         </div>
         <div class="footer">
           <button class="btn btn-primary" id="lessonNextBtn" data-next disabled>Далее</button>
@@ -322,6 +308,6 @@
   </div>
 </div>
 
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>
