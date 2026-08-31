@@ -51,6 +51,23 @@
   // Telegram Bot API (see backend/main.py). Bump alongside a redeploy if
   // the Railway service URL ever changes.
   const LEADS_ENDPOINT = "https://oksana-funnel-backend-production.up.railway.app/api/leads";
+  const TRACK_ENDPOINT = "https://oksana-funnel-backend-production.up.railway.app/api/track";
+
+  // Referral attribution: the bot appends ?ref=<code> to this URL when it
+  // sends the "Открыть приложение" web_app button for a chat that came in
+  // via a https://t.me/<bot>?start=ref_<code> link (see backend/bot.py).
+  // Carried through on every /api/track and /api/leads call below so
+  // funnel_events/leads stay attributable to the referral link.
+  const refCode = new URLSearchParams(window.location.search).get("ref") || null;
+
+  function trackEvent(step) {
+    if (!tgInitData) return; // no signed session outside real Telegram — nothing to attribute
+    fetch(TRACK_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ step, ref_code: refCode, initData: tgInitData }),
+    }).catch((err) => console.error("Не удалось отправить трекинг-событие:", step, err));
+  }
 
   const track = document.getElementById("track");
   const slides = Array.from(document.querySelectorAll("[data-slide]"));
@@ -126,6 +143,7 @@
         opt.classList.add("selected");
         quizAnswers[qid] = opt.dataset.value;
         nextBtn.disabled = false;
+        if (qid === "q3") trackEvent("passed_quiz");
       });
     });
   });
@@ -173,7 +191,7 @@
       const res = await fetch(LEADS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ initData: tgInitData, quizAnswers, leadDraft }),
+        body: JSON.stringify({ initData: tgInitData, quizAnswers, leadDraft, ref_code: refCode }),
       });
       if (!res.ok) throw new Error("HTTP " + res.status);
       btnSubmitLead.textContent = originalLabel;
@@ -214,6 +232,13 @@
     lessonVideo.addEventListener("timeupdate", clampForward);
     lessonVideo.addEventListener("seeking", clampForward);
     lessonVideo.addEventListener("seeked", clampForward);
+
+    let watchStarted = false;
+    lessonVideo.addEventListener("play", () => {
+      if (watchStarted) return;
+      watchStarted = true;
+      trackEvent("watched_lesson");
+    });
   }
 
   if (lessonVideo && lessonNextBtn) {
@@ -341,4 +366,5 @@
   }
 
   render();
+  trackEvent("opened_slide1");
 })();
